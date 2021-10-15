@@ -65,7 +65,7 @@ class ClientController extends Controller
         $datosCliente = request()->except('_token');
         Client::insert($datosCliente);
        
-        return response()->json($datosCliente);
+        return redirect('clientes')->with('mensaje','Registro agregado con éxito');
     }
 
     /**
