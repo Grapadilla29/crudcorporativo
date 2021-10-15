@@ -6,6 +6,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\Country;
 
+
 class ClientController extends Controller
 {
     /**
@@ -13,11 +14,13 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $datos['clients']=Client::paginate(2);
-        return view('clientes.index',$datos);
+        $buscar = $request->get('buscar');
+        $paises['countries']=Country::all();
+        $datos['clients']=Client::where('name','like',"%$buscar%")->paginate(2);
+        return view('clientes.index',$datos,$paises);
     }
 
     /**
@@ -61,9 +64,8 @@ class ClientController extends Controller
 
         $datosCliente = request()->except('_token');
         Client::insert($datosCliente);
-
-       //return response()->json($datosCliente);
-       return redirect('clientes')->with('mensaje','Cliente agregado cone éxito');
+       
+        return response()->json($datosCliente);
     }
 
     /**
